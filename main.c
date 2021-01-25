@@ -1,13 +1,4 @@
-/*
- * File:   main.cpp
- * Author: j4-smith
- *N-Queens example in C
- * First Created on 25 April 2014, 18:42
- * Modified in light of student progress 
- 
- * Rewritten Oct 2015 to use more generic solution structures 
- * and functions with NQueens-specific names that call the functions that modify the
- */
+
 
 
 #include <stdio.h>
@@ -17,35 +8,23 @@
 #include "NQueensChecker.h"
 
 
-candidateSolution workingCandidate;//this one will hold the soltion we arecurrently considering
-candidateList  currentListOfCandidates; // this list will store all the soltion we;ve created but not examined yet
-candidateList listOfExaminedCandidates; // this is where we will store all the ones we're done with
-
-
-
-//************************ don't edit anything above this line***********************//
-
+candidateSolution workingCandidate;
+candidateList  currentListOfCandidates; 
+candidateList listOfExaminedCandidates; 
 
 
 
 int main(int argc, char* argv[]) {
-	/* the next set of variables get used within our main function
-	 * but aren't declared globally becuase we don't want the other functions to change them inadvertently */
 	int numberOfCompleteSolutionsFound = 0; //simple flag to let us know whether we have stopped
 	int numberOfSolutionsExamined = 0; //simple counter
 	int indexOfSolutionWeAreLookingAt; //index in list of current solution being examined
 	int newLength, valueToAdd; // used when we extend the working candidate
 	
 
-	//start off by emptying the lists of candidate solutions
+	
 	CleanListsOfSolutionsToStart();
 	CleanWorkingCandidate();
 	
-	/* So now let's start by creating our first solution
-	 * which we do by filling the values into the variable we declared as the workingCandidate
-	 * We'll begin by putting the first queen into column ), or specified from the command line
-   */
-
 	valueToAdd = 0;
 	if (argc == 2)
 	{
@@ -62,22 +41,21 @@ int main(int argc, char* argv[]) {
 	//and we can put this as our first item in the list to start the process
 	AddWorkingCandidateToCurrentList();
 
-
 	//Now we will go into a loop examining solutions until we find one that is full and has no vulnerable queens
 
 	while (numberOfCompleteSolutionsFound == 0)
 	{
-
 		indexOfSolutionWeAreLookingAt = currentListOfCandidates.indexOfLastEntryAdded;
-
+		
 		//Copy thwe solution into working candidate
 		CopySolutionFromCurrentListIntoWorkingCandidate(indexOfSolutionWeAreLookingAt);
-
+		
 		//recmove it out of the open list so it's no longer reconsidered
 		RemoveSolutionFromCurrentList(indexOfSolutionWeAreLookingAt);
-
+		
 		//This shows the progress of what is happening
 		printf("Next solution to be examined was at index %d \n", indexOfSolutionWeAreLookingAt);
+		
 		PrintWorkingCandidate();
 
 		numberOfSolutionsExamined++;
@@ -95,7 +73,6 @@ int main(int argc, char* argv[]) {
 		}
 		else // if the result is not found it continues searching
 		{
-			
 			if (workingCandidate.score > 0)
 			{
 				;
@@ -109,16 +86,10 @@ int main(int argc, char* argv[]) {
 				{
 					MoveQueenInRowToNewCol(newLength, valueToAdd);
 
-					AddWorkingCandidateToCurrentList();
-
-					
-				}
-
-				
+					AddWorkingCandidateToCurrentList();					
+				}				
 			}
-
 		}
-
 	}
 	PrintFinalSolutionAndExit();
 	return 0;
